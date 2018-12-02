@@ -141,6 +141,8 @@ $ oc get route
 $ curl -Is welcome-welcome.apps.ocp.local
 ....
 
+image::images/welcome_php.png[image]
+
 Voila!! you created your first application using an existing docker
 image on OpenShift.
 
