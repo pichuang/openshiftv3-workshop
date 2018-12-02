@@ -11,7 +11,7 @@ how to create an application from an existing docker image.
 the commands below.
 
 ....
-$ oc new-project mycliproject-UserName --description="My CLI Project" --display-name="CLI Project"
+$ oc new-project welcome --description="My CLI Project" --display-name="CLI Project"
 ....
 
 Upon project creation, OpenShift will automatically switch to the newly
@@ -76,7 +76,7 @@ $ oc get pods
 
 NAME               READY     STATUS    RESTARTS   AGE
 welcome-1-deploy   1/1       Running   0          1m
-welcome-1-dkyyq    0/1       Pending   0          0s
+welcome-1-9wdtj    0/1       Pending   0          0s
 ....
 
 In the above example `welcome-1-deploy` is the deployer pod and the
@@ -88,7 +88,7 @@ pod will succeed and the application pod will change for `Pending` to
 $ oc get pods
 
 NAME              READY     STATUS    RESTARTS   AGE
-welcome-1-dkyyq   1/1       Running   0          56s
+welcome-1-9wdtj   1/1       Running   0          8m
 ....
 
 *Step 3: Add a Route for your application*
@@ -100,8 +100,8 @@ can also use `oc get svc` shorthand).
 ....
 $ oc get services
 
-NAME      CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-welcome   172.30.77.93   <none>        8080/TCP   2m
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+welcome   ClusterIP   11.11.11.176   <none>        8080/TCP   7m
 ....
 
 You will notice the `welcome` service was created for this project.
@@ -120,8 +120,14 @@ your setup an change it.
 ....
 $ oc expose service welcome --name=welcome
 
-NAME      HOST/PORT                     PATH      SERVICE   LABELS
-welcome   welcome.UserName.apps.workshop.osecloud.com             welcome
+route.route.openshift.io/welcome exposed
+....
+
+....
+$ oc get route
+
+NAME      HOST/PORT                        PATH      SERVICES   PORT       TERMINATION   WILDCARD
+welcome   welcome-welcome.apps.ocp.local             welcome    8080-tcp                 None
 ....
 
 *Step 4: Try your application*
@@ -130,9 +136,9 @@ Access the application: Now access the application using curl (looking
 for 200 status code) or from the browser and see the result
 
 ....
-$ oc get routes
+$ oc get route
 
-$ curl -Is <route>
+$ curl -Is welcome-welcome.apps.ocp.local
 ....
 
 Voila!! you created your first application using an existing docker
@@ -146,20 +152,23 @@ created in your project.
 ....
 $ oc get all
 
-NAME      TYPE      SOURCE
-NAME      TYPE      STATUS    POD
-NAME      DOCKER REPO                   TAGS      UPDATED
-welcome   redhatworkshops/welcome-php   latest    5 hours ago
-NAME      TRIGGERS                    LATEST VERSION
-welcome   ConfigChange, ImageChange   1
-CONTROLLER   CONTAINER(S)   IMAGE(S)                             SELECTOR                                        REPLICAS
-welcome-1    welcome        redhatworkshops/welcome-php:latest   deployment=welcome-1,deploymentconfig=welcome   1
-NAME      HOST/PORT                     PATH      SERVICE   LABELS
-welcome   welcome.apps.workshop.osecloud.com             welcome
-NAME      LABELS    SELECTOR                   IP(S)           PORT(S)
-welcome   <none>    deploymentconfig=welcome   172.30.155.37   80/TCP
-NAME              READY     REASON    RESTARTS   AGE
-welcome-1-8d7nk   1/1       Running   0          4h
+NAME                  READY     STATUS    RESTARTS   AGE
+pod/welcome-1-9wdtj   1/1       Running   0          9m
+
+NAME                              DESIRED   CURRENT   READY     AGE
+replicationcontroller/welcome-1   1         1         1         9m
+
+NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/welcome   ClusterIP   11.11.11.176   <none>        8080/TCP   9m
+
+NAME                                         REVISION   DESIRED   CURRENT   TRIGGERED BY
+deploymentconfig.apps.openshift.io/welcome   1          1         1         config,image(welcome:latest)
+
+NAME                                     DOCKER REPO                                        TAGS      UPDATED
+imagestream.image.openshift.io/welcome   docker-registry.default.svc:5000/welcome/welcome   latest    9 minutes ago
+
+NAME                               HOST/PORT                        PATH      SERVICES   PORT       TERMINATION   WILDCARD
+route.route.openshift.io/welcome   welcome-welcome.apps.ocp.local             welcome    8080-tcp                 None
 ....
 
 Now you can delete all these components by running one command.
