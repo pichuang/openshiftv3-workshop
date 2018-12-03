@@ -14,14 +14,14 @@ it. Run the following command to make sure. *Remember* to substitute
 UserName with your username.
 
 ....
-$ oc project mycliproject-UserName
+$ oc new-project lab2
 ....
 
 *Step 2: Create an application that uses docker file*
 
 This time we will use a project that has a Dockerfile in a source code
 repository. We will use a simple project on github
-(https://github.com/RedHatWorkshops/time). The `rhel` folder from this github
+(https://github.com/pichuang/time). The `rhel` folder from this github
 project is built starting with rhel7 as the base image which is
 described in Dockerfile. Look at the Dockerfile for this project. It
 starts off with `registry.access.redhat.com/rhel7` image. It copies the
@@ -43,27 +43,34 @@ Now let’s create an application using this approach. We will run
 `oc new-app` command by supplying the git uri as the parameter.
 
 ....
-$ oc new-app https://github.com/RedHatWorkshops/time --context-dir=rhel
+$ oc new-app https://github.com/pichuang/time --context-dir=rhel
 
---> Found Docker image 1d309a6 (6 weeks old) from registry.access.redhat.com for "registry.access.redhat.com/rhel7"
+--> Found Docker image 9477422 (7 days old) from registry.access.redhat.com for "registry.access.redhat.com/rhscl/httpd-24-rhel7"
 
-    * An image stream will be created as "rhel7:latest" that will track the source image
-    * A Docker build using source code from https://github.com/RedHatWorkshops/time will be created
-      * The resulting image will be pushed to image stream "time:latest"
-      * Every time "rhel7:latest" changes a new build will be triggered
+    Apache httpd 2.4
+    ----------------
+    Apache httpd 2.4 available as container, is a powerful, efficient, and extensible web server. Apache supports a variety of features, many implemented as compiled modules which extend the core functionality. These can range from server-side programming language support to authentication schemes. Virtual hosting allows one Apache installation to serve many different Web sites.
+
+    Tags: builder, httpd, httpd24
+
+    * An image stream tag will be created as "httpd-24-rhel7:latest" that will track the source image
+    * A Docker build using source code from https://github.com/pichuang/time will be created
+      * The resulting image will be pushed to image stream tag "time:latest"
+      * Every time "httpd-24-rhel7:latest" changes a new build will be triggered
     * This image will be deployed in deployment config "time"
-    * Port 8080 will be load balanced by service "time"
+    * Ports 8080/tcp, 8443/tcp will be load balanced by service "time"
       * Other containers can access this service through the hostname "time"
-    * WARNING: Image "registry.access.redhat.com/rhel7" runs as the 'root' user which may not be permitted by your cluster administrator
 
---> Creating resources with label app=time ...
-    imagestream "rhel7" created
-    imagestream "time" created
-    buildconfig "time" created
-    deploymentconfig "time" created
+--> Creating resources ...
+    imagestream.image.openshift.io "httpd-24-rhel7" created
+    imagestream.image.openshift.io "time" created
+    buildconfig.build.openshift.io "time" created
+    deploymentconfig.apps.openshift.io "time" created
     service "time" created
 --> Success
     Build scheduled, use 'oc logs -f bc/time' to track its progress.
+    Application is not exposed. You can expose services to the outside world by executing one or more of the commands below:
+     'oc expose svc/time'
     Run 'oc status' to view your app.
 ....
 
@@ -79,79 +86,56 @@ In the meanwhile lets have a look at the buildconfig by running the
 command shown below.
 
 ....
-$ oc get bc time -o json
+$ oc get bc time -o yaml
 
-{
-    "kind": "BuildConfig",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "time",
-        "namespace": "mycliproject-user10",
-        "selfLink": "/oapi/v1/namespaces/mycliproject-admin/buildconfigs/time",
-        "uid": "ac4beccd-9569-11e6-ad4c-000d3af733e4",
-        "resourceVersion": "134692",
-        "creationTimestamp": "2016-10-18T19:32:57Z",
-        "labels": {
-            "app": "time"
-        },
-        "annotations": {
-            "openshift.io/generated-by": "OpenShiftNewApp"
-        }
-    },
-    "spec": {
-        "triggers": [
-            {
-                "type": "GitHub",
-                "github": {
-                    "secret": "1pOQJ1G5tr6M70CQ5779"
-                }
-            },
-            {
-                "type": "Generic",
-                "generic": {
-                    "secret": "Bge9C-De7rm9PPDG_EQR"
-                }
-            },
-            {
-                "type": "ConfigChange"
-            },
-            {
-                "type": "ImageChange",
-                "imageChange": {
-                    "lastTriggeredImageID": "registry.access.redhat.com/rhel7@sha256:eac2421be7a6844a5c83b8f394d1f5f121b18fa4e455c5f09be940e0384a1d97"
-                }
-            }
-        ],
-        "runPolicy": "Serial",
-        "source": {
-            "type": "Git",
-            "git": {
-                "uri": "https://github.com/RedHatWorkshops/time"
-            },
-            "contextDir": "rhel"
-        },
-        "strategy": {
-            "type": "Docker",
-            "dockerStrategy": {
-                "from": {
-                    "kind": "ImageStreamTag",
-                    "name": "rhel7:latest"
-                }
-            }
-        },
-        "output": {
-            "to": {
-                "kind": "ImageStreamTag",
-                "name": "time:latest"
-            }
-        },
-        "resources": {},
-        "postCommit": {}
-    },
-    "status": {
-        "lastVersion": 1
-    }
-}
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: 2018-12-03T18:28:20Z
+  labels:
+    app: time
+  name: time
+  namespace: lab2
+  resourceVersion: "53745"
+  selfLink: /apis/build.openshift.io/v1/namespaces/lab2/buildconfigs/time
+  uid: 35dbc9b4-f729-11e8-8b74-005056baa858
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: time:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: rhel
+    git:
+      uri: https://github.com/pichuang/time
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: httpd-24-rhel7:latest
+    type: Docker
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - github:
+      secret: rS64TuPVjpFSMUaOjZmW
+    type: GitHub
+  - generic:
+      secret: HmTDuBblgbiyAwqhCJJ-
+    type: Generic
+  - type: ConfigChange
+  - imageChange:
+      lastTriggeredImageID: registry.access.redhat.com/rhscl/httpd-24-rhel7@sha256:23966b771f1cc198c6df19a64cbf516c03b1a53ac909073d6f73a17040aed986
+    type: ImageChange
+status:
+  lastVersion: 1
 ....
 
 Note the name of the buildconfig in metadata is set to `time`, the git
@@ -166,8 +150,9 @@ buildconfig.
 
 ....
 $ oc get builds
-NAME      TYPE      FROM          STATUS     STARTED          DURATION
-time-1    Docker    Git@1ec2d66   Complete   19 minutes ago   1m13s
+
+NAME      TYPE      FROM          STATUS     STARTED         DURATION
+time-1    Docker    Git@db6c41a   Complete   3 minutes ago   1m40s
 ....
 
 Note the name of the build that is running i.e. time-1. We will use that
@@ -179,14 +164,58 @@ pushing this to OpenShift’s internal docker registry.
 ....
 $ oc logs build/time-1
 
-<output ommited>
-Successfully built 492e4a3bf772
-Pushing image docker-registry.default.svc:5000/mycliproject-user02/time:latest ...
-Pushed 0/5 layers, 60% complete
-Pushed 1/5 layers, 60% complete
-Pushed 2/5 layers, 63% complete
-Pushed 3/5 layers, 62% complete
-Pushed 4/5 layers, 80% complete
+Cloning "https://github.com/pichuang/time" ...
+        Commit: db6c41ae27c6551e3fb2f36a4edaf55d3ea2d264 (Update Dockerfile)
+        Author: Robert Sandoval <rsandova@redhat.com>
+        Date:   Mon Nov 12 15:08:33 2018 -0600
+Replaced Dockerfile FROM image registry.access.redhat.com/rhscl/httpd-24-rhel7
+
+Pulling image registry.access.redhat.com/rhscl/httpd-24-rhel7@sha256:23966b771f1cc198c6df19a64cbf516c03b1a53ac909073d6f73a17040
+aed986 ...
+Pulled 1/4 layers, 26% complete
+Pulled 2/4 layers, 55% complete
+Pulled 3/4 layers, 86% complete
+Pulled 4/4 layers, 100% complete
+Extracting
+Step 1/7 : FROM registry.access.redhat.com/rhscl/httpd-24-rhel7@sha256:23966b771f1cc198c6df19a64cbf516c03b1a53ac909073d6f73a170
+40aed986
+ ---> 947742214b98
+Step 2/7 : ADD ./index.html /var/www/html
+ ---> 0a22c06bc626
+Removing intermediate container 9bca0d977b72
+Step 3/7 : USER 1001
+ ---> Running in f0718b744735
+ ---> e807d3c20523
+Removing intermediate container f0718b744735
+Step 4/7 : EXPOSE 8080
+ ---> Running in 403048da947b
+ ---> d9c5fc27ecd8
+Removing intermediate container 403048da947b
+Step 5/7 : EXPOSE 8443
+ ---> Running in b71b601eec52
+ ---> 5516091e1e9d
+Removing intermediate container b71b601eec52
+Step 6/7 : ENV "OPENSHIFT_BUILD_NAME" "time-1" "OPENSHIFT_BUILD_NAMESPACE" "lab2" "OPENSHIFT_BUILD_SOURCE" "https://github.com/
+pichuang/time" "OPENSHIFT_BUILD_COMMIT" "db6c41ae27c6551e3fb2f36a4edaf55d3ea2d264"
+ ---> Running in 6ab0330ffeaa
+ ---> a0bbb489d444
+Removing intermediate container 6ab0330ffeaa
+Step 7/7 : LABEL "io.openshift.build.commit.author" "Robert Sandoval \u003crsandova@redhat.com\u003e" "io.openshift.build.commi
+t.date" "Mon Nov 12 15:08:33 2018 -0600" "io.openshift.build.commit.id" "db6c41ae27c6551e3fb2f36a4edaf55d3ea2d264" "io.openshif
+t.build.commit.message" "Update Dockerfile" "io.openshift.build.commit.ref" "master" "io.openshift.build.name" "time-1" "io.ope
+nshift.build.namespace" "lab2" "io.openshift.build.source-context-dir" "rhel" "io.openshift.build.source-location" "https://git
+hub.com/pichuang/time"
+ ---> Running in 664f58c3c9cd
+ ---> 956947d91da4
+Removing intermediate container 664f58c3c9cd
+Successfully built 956947d91da4
+
+Pushing image docker-registry.default.svc:5000/lab2/time:latest ...
+Pushed 0/5 layers, 2% complete
+Pushed 1/5 layers, 22% complete
+Pushed 2/5 layers, 44% complete
+Pushed 3/5 layers, 67% complete
+Pushed 4/5 layers, 88% complete
 Pushed 5/5 layers, 100% complete
 Push successful
 ....
@@ -204,145 +233,105 @@ deploymentconfig.
 ....
 $ oc get dc -o json
 
-{
-    "apiVersion": "v1",
-    "items": [
-        {
-            "apiVersion": "v1",
-            "kind": "DeploymentConfig",
-            "metadata": {
-                "annotations": {
-                    "openshift.io/generated-by": "OpenShiftNewApp"
-                },
-                "creationTimestamp": "2018-01-15T18:07:34Z",
-                "generation": 2,
-                "labels": {
-                    "app": "time"
-                },
-                "name": "time",
-                "namespace": "mycliproject-user02",
-                "resourceVersion": "37867345",
-                "selfLink": "/oapi/v1/namespaces/mycliproject-user02/deploymentconfigs/time",
-                "uid": "f63997bb-fa1e-11e7-9e8e-06d3bdd62498"
-            },
-            "spec": {
-                "replicas": 1,
-                "revisionHistoryLimit": 10,
-                "selector": {
-                    "app": "time",
-                    "deploymentconfig": "time"
-                },
-                "strategy": {
-                    "activeDeadlineSeconds": 21600,
-                    "resources": {},
-                    "rollingParams": {
-                        "intervalSeconds": 1,
-                        "maxSurge": "25%",
-                        "maxUnavailable": "25%",
-                        "timeoutSeconds": 600,
-                        "updatePeriodSeconds": 1
-                    },
-                    "type": "Rolling"
-                },
-                "template": {
-                    "metadata": {
-                        "annotations": {
-                            "openshift.io/generated-by": "OpenShiftNewApp"
-                        },
-                        "creationTimestamp": null,
-                        "labels": {
-                            "app": "time",
-                            "deploymentconfig": "time"
-                        }
-                    },
-                    "spec": {
-                        "containers": [
-                            {
-                                "image": "docker-registry.default.svc:5000/mycliproject-user02/time@sha256:a8f34cc98aba4a68d3566f3ea387295f7a2945347ffc7794246cd8a89b556706",
-                                "imagePullPolicy": "Always",
-                                "name": "time",
-                                "ports": [
-                                    {
-                                        "containerPort": 8080,
-                                        "protocol": "TCP"
-                                    }
-                                ],
-                                "resources": {},
-                                "terminationMessagePath": "/dev/termination-log",
-                                "terminationMessagePolicy": "File"
-                            }
-                        ],
-                        "dnsPolicy": "ClusterFirst",
-                        "restartPolicy": "Always",
-                        "schedulerName": "default-scheduler",
-                        "securityContext": {},
-                        "terminationGracePeriodSeconds": 30
-                    }
-                },
-                "test": false,
-                "triggers": [
-                    {
-                        "type": "ConfigChange"
-                    },
-                    {
-                        "imageChangeParams": {
-                            "automatic": true,
-                            "containerNames": [
-                                "time"
-                            ],
-                            "from": {
-                                "kind": "ImageStreamTag",
-                                "name": "time:latest",
-                                "namespace": "mycliproject-user02"
-                            },
-                            "lastTriggeredImage": "docker-registry.default.svc:5000/mycliproject-user02/time@sha256:a8f34cc98aba4a68d3566f3ea387295f7a2945347ffc7794246cd8a89b556706"
-                        },
-                        "type": "ImageChange"
-                    }
-                ]
-            },
-            "status": {
-                "availableReplicas": 1,
-                "conditions": [
-                    {
-                        "lastTransitionTime": "2018-01-15T18:08:51Z",
-                        "lastUpdateTime": "2018-01-15T18:08:51Z",
-                        "message": "Deployment config has minimum availability.",
-                        "status": "True",
-                        "type": "Available"
-                    },
-                    {
-                        "lastTransitionTime": "2018-01-15T18:08:49Z",
-                        "lastUpdateTime": "2018-01-15T18:08:52Z",
-                        "message": "replication controller \"time-1\" successfully rolled out",
-                        "reason": "NewReplicationControllerAvailable",
-                        "status": "True",
-                        "type": "Progressing"
-                    }
-                ],
-                "details": {
-                    "causes": [
-                        {
-                            "type": "ConfigChange"
-                        }
-                    ],
-                    "message": "config change"
-                },
-                "latestVersion": 1,
-                "observedGeneration": 2,
-                "readyReplicas": 1,
-                "replicas": 1,
-                "unavailableReplicas": 0,
-                "updatedReplicas": 1
-            }
-        }
-    ],
-    "kind": "List",
-    "metadata": {
-        "resourceVersion": "",
-        "selfLink": ""
-    }
-}
+apiVersion: v1
+items:
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: 2018-12-03T18:28:20Z
+    generation: 2
+    labels:
+      app: time
+    name: time
+    namespace: lab2
+    resourceVersion: "54137"
+    selfLink: /apis/apps.openshift.io/v1/namespaces/lab2/deploymentconfigs/time
+    uid: 35e3f9ba-f729-11e8-8b74-005056baa858
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      app: time
+      deploymentconfig: time
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: time
+          deploymentconfig: time
+      spec:
+        containers:
+        - image: docker-registry.default.svc:5000/lab2/time@sha256:7ebc87a5152fefb835798e9cfe0b87e1c502df59e95719adaa45ef8fb4abb91a
+          imagePullPolicy: Always
+          name: time
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          - containerPort: 8443
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - time
+        from:
+          kind: ImageStreamTag
+          name: time:latest
+          namespace: lab2
+        lastTriggeredImage: docker-registry.default.svc:5000/lab2/time@sha256:7ebc87a5152fefb835798e9cfe0b87e1c502df59e95719adaa45ef8fb4abb91a
+      type: ImageChange
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: 2018-12-03T18:30:12Z
+      lastUpdateTime: 2018-12-03T18:30:12Z
+      message: Deployment config has minimum availability.
+      status: "True"
+      type: Available
+    - lastTransitionTime: 2018-12-03T18:30:09Z
+      lastUpdateTime: 2018-12-03T18:30:13Z
+      message: replication controller "time-1" successfully rolled out
+      reason: NewReplicationControllerAvailable
+      status: "True"
+      type: Progressing
+    details:
+      causes:
+      - type: ConfigChange
+      message: config change
+    latestVersion: 1
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    unavailableReplicas: 0
+    updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
 ....
 
 Note where the image is picked from. It shows that the deployment picks
@@ -358,8 +347,8 @@ deployed quickly and starts running in its own pod.
 $ oc get pods
 
 NAME           READY     STATUS      RESTARTS   AGE
-time-1-build   0/1       Completed   0          2h
-time-1-rqa7c   1/1       Running     0          2h
+time-1-build   0/1       Completed   0          8m
+time-1-p495z   1/1       Running     0          6m
 ....
 
 *Step 5: Adding route*
@@ -370,8 +359,8 @@ We will check the service and add a route to expose that service.
 ....
 $ oc get services
 
-NAME      CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-time      172.30.xx.82   <none>        8080/TCP   2h
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+time      ClusterIP   11.11.11.116   <none>        8080/TCP,8443/TCP   8m
 ....
 
 Here we expose the service as a route.
@@ -379,8 +368,13 @@ Here we expose the service as a route.
 ....
 $ oc expose service time
 
-NAME      HOST/PORT   PATH      SERVICE   LABELS     TLS TERMINATION
-time                            time      app=time
+route.route.openshift.io/time exposed
+....
+
+....
+$ oc get svc time
+NAME      TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+time      ClusterIP   11.11.11.116   <none>        8080/TCP,8443/TCP   9m
 ....
 
 And then we check the route exposed.
@@ -388,8 +382,8 @@ And then we check the route exposed.
 ....
 $ oc get routes
 
-NAME      HOST/PORT                                           PATH      SERVICES   PORT       TERMINATION   WILDCARD
-time      time-mycliproject-UserName.apps.workshop.osecloud.com             time       8080-tcp                 None
+NAME      HOST/PORT                  PATH      SERVICES   PORT       TERMINATION   WILDCARD
+time      time-lab2.apps.ocp.local             time       8080-tcp                 None
 ....
 
 *Note:* Unlike in the previous lab, this time we did not use `--hostname`
@@ -404,8 +398,8 @@ time. *If you don’t provide time.php extension, it displays apache’s
 default index page.*
 
 ....
-$ curl time-mycliproject-UserName.apps.workshop.osecloud.com
-Wednesday 1st of July 2015 01:12:20 AM
+$ curl time-lab2.apps.ocp.local
+Hello from the HTTPD Pod running in openshift
 ....
 
 Congratulations!! In this exercise you have learnt how to create, build
