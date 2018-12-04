@@ -14,13 +14,13 @@ Applications.
 *Remember* to replace the username before running the command.
 
 ....
-$ oc new-project myjbossapp-UserName --display-name="My JBoss Applications" --description="A place for my JBoss EAP Applications"
+$ oc new-project lab4 --display-name="My JBoss Applications" --description="A place for my JBoss EAP Applications"
 ....
 
 *Step 2: Create an application that uses the JBoss EAP builder image*
 
 We will be using a sample application called `Kitchensink` (found
-https://github.com/RedHatWorkshops/kitchensink[here]). Taking that
+https://github.com/pichuang/kitchensink[here]). Taking that
 source-code; we will use the JBoss ImageStream (or the builder image) to
 assemble our application.
 
@@ -38,7 +38,7 @@ Add to Project: select your project name if it is not show
 
 Application Name: ks
 
-Git Repository URL: https://github.com/RedHatWorkshops/kitchensink
+Git Repository URL: https://github.com/pichuang/kitchensink
 
 Git Reference: master
 
