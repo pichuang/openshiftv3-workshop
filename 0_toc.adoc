@@ -26,5 +26,5 @@ Lab Exercises Table of Contents
 - [ ] Lab 15. link:15-Adding-Custom-S2I-Image-to-the-Project-Catalog.adoc[Adding Custom S2I Image to Project Catalog]
 - [ ] Lab 16. link:16-Using-ConfigMap-to-Inject-Application-Configuration.adoc[Using ConfigMap to add a Database Connection]
 - [ ] Lab 17. link:17-Dynamic-Configuration-Updates-using-ConfigMap.adoc[Dynamic Configuration updates using ConfigMap]
-- [ ] Lab 18. link:18-Changing-code-on-the-fly.adoc[Changing code on the fly]
+- [x] Lab 18. link:18-Changing-code-on-the-fly.adoc[Changing code on the fly]
 - [ ] Lab 19. link:19-Creating-a-Pipeline.adoc[Creating a CI/CD Pipeline]
