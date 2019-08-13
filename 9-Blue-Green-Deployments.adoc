@@ -36,7 +36,7 @@ Part I
 *Remember* to substitute the username
 
 ....
-$ oc new-project bluegreen-UserName --display-name="Blue Green Project" --description="Blue Green Project"
+$ oc new-project bluegreen --display-name="Blue Green Project" --description="Blue Green Project"
 ....
 
 *Step 2: List existing image builder or image streams*
@@ -48,7 +48,7 @@ Image streams (oc new-app --image-stream=<image-stream> [--code=<source>])
 -----
 php
   Project: openshift
-  Tags:    5.5, 5.6, latest
+  Tags:    7.0, 7.1, latest
 ....
 
 *Step 3: Create an application*
@@ -188,11 +188,11 @@ kind: Route
 metadata:
   creationTimestamp: 2015-12-22T19:16:28Z
   labels:
-    app: green
+    app: green <-----
   name: bluegreen
-  namespace: bluegreen-UserName
+  namespace: bluegreen
   resourceVersion: "2969408"
-  selfLink: /oapi/v1/namespaces/bluegreen-UserName/routes/bluegreen
+  selfLink: /oapi/v1/namespaces/bluegreen/routes/bluegreen
   uid: 80829b59-a8e0-11e5-be21-fa163ec58dad
 spec:
   host: bluegreen.UserName.apps.workshop.osecloud.com
@@ -200,7 +200,7 @@ spec:
     targetPort: "8080"
   to:
     kind: Service
-    name: green
+    name: green <-----
 status: {}
 ....
 
