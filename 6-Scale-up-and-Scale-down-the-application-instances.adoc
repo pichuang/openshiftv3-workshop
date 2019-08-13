@@ -6,15 +6,19 @@ In this exercise we will learn how to scale our application. OpenShift
 has the capability to scale your application and make sure that many
 instances are always running.
 
+*Step 0: Before start
+
+Please make sure you have completed Lab 2 exercise - link:2-Create-App-Using-Docker-Build.adoc[Create an application using Docker Build Strategy using CLI]
+
 *Step 1: Switch to an existing project*
 
 For this exercise, we will be using an already running application. We
-will be using the `lab6` that you created in the
+will be using the `lab2` that you created in the
 previous labs. Make sure you are switched to that project by using the
 `oc project` command and *remember* to substitute UserName.
 
 ....
-$ oc new-project lab6
+$ oc project lab2
 ....
 
 *Step 2: View the deployment config*
