@@ -9,12 +9,12 @@ instances are always running.
 *Step 1: Switch to an existing project*
 
 For this exercise, we will be using an already running application. We
-will be using the `mycliproject-UserName` that you created in the
+will be using the `lab6` that you created in the
 previous labs. Make sure you are switched to that project by using the
 `oc project` command and *remember* to substitute UserName.
 
 ....
-$ oc project mycliproject-UserName
+$ oc new-project lab6
 ....
 
 *Step 2: View the deployment config*
