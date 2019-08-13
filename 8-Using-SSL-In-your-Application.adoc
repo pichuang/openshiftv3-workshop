@@ -8,12 +8,12 @@ with the OpenShift Wildcard certificate.
 *Step 1: Switch to an existing project*
 
 For this exercise, we will use an application that we created before. We
-will be using the *myjbossapp-UserName* that you created in the previous
+will be using the *lab2* that you created in the previous
 labs. Make sure you are switched to that project by using the *oc
 project* command. *Remember* to substitute UserName.
 
 ....
-$ oc project myjbossapp-UserName
+$ oc project lab2
 ....
 
 *Step 2: View the routing config*
@@ -22,37 +22,39 @@ To view the routing config you will need to use the `oc get route`
 command
 
 ....
-$ oc get route/ks -o yaml
+$ oc get route/time -o yaml
 
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   annotations:
     openshift.io/host.generated: "true"
-  creationTimestamp: 2016-10-06T06:28:23Z
+  creationTimestamp: 2019-08-13T08:59:33Z
   labels:
-    app: ks
-  name: ks
-  namespace: myjbossapp-admin
-  resourceVersion: "33256"
-  selfLink: /oapi/v1/namespaces/myjbossapp-admin/routes/ks
-  uid: 14cf078c-8b8e-11e6-ba5b-080027782cf7
+    app: time
+  name: time
+  namespace: lab2
+  resourceVersion: "53860"
+  selfLink: /apis/route.openshift.io/v1/namespaces/lab2/routes/time
+  uid: ab159b28-bda8-11e9-bea8-06024d6b2a9c
 spec:
-  host: ks-myjbossapp-UserName.apps.workshop.osecloud.com
+  host: time-lab2.apps.pichuang-678b.openshiftworkshop.com
   port:
     targetPort: 8080-tcp
   to:
     kind: Service
-    name: ks
+    name: time
     weight: 100
+  wildcardPolicy: None
 status:
   ingress:
   - conditions:
-    - lastTransitionTime: 2016-10-06T06:28:23Z
+    - lastTransitionTime: 2019-08-13T08:59:33Z
       status: "True"
       type: Admitted
-    host: ks-myjbossapp-UserName.apps.workshop.osecloud.com
+    host: time-lab2.apps.pichuang-678b.openshiftworkshop.com
     routerName: router
+    wildcardPolicy: None
 ....
 
 Note here that the `host:` is set to the FQDN that your application is
@@ -73,7 +75,7 @@ sometimes called SSL-offloading).
 Edit your routing configuration:
 
 ....
-oc edit route/ks
+oc edit route/time
 ....
 
 You are going to add `tls: termination: edge` right below the `host:`
@@ -94,7 +96,7 @@ metadata:
   selfLink: /oapi/v1/namespaces/myjbossapp-shchan/routes/ks
   uid: fba5d1e6-a85f-11e5-be21-fa163ec58dad
 spec:
-  host: ks-myjbossapp-UserName.apps.workshop.osecloud.com
+  host: time-lab2.apps.pichuang-678b.openshiftworkshop.com
   tls:
     termination: edge
   port:
