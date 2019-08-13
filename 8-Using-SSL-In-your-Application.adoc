@@ -82,28 +82,28 @@ You are going to add `tls: termination: edge` right below the `host:`
 section. It should look something like this.
 
 ....
-apiVersion: v1
+apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   annotations:
     openshift.io/host.generated: "true"
-  creationTimestamp: 2015-12-22T03:56:30Z
+  creationTimestamp: 2019-08-13T08:59:33Z
   labels:
-    app: ks
-  name: ks
-  namespace: myjbossapp-shchan
-  resourceVersion: "2903142"
-  selfLink: /oapi/v1/namespaces/myjbossapp-shchan/routes/ks
-  uid: fba5d1e6-a85f-11e5-be21-fa163ec58dad
+    app: time
+  name: time
+  namespace: lab2
+  resourceVersion: "53860"
+  selfLink: /apis/route.openshift.io/v1/namespaces/lab2/routes/time
+  uid: ab159b28-bda8-11e9-bea8-06024d6b2a9c
 spec:
   host: time-lab2.apps.pichuang-678b.openshiftworkshop.com
-  tls:
-    termination: edge
   port:
-    targetPort: "8080"
+    targetPort: 8080-tcp
   to:
     kind: Service
-    name: ks
+    name: time
+    weight: 100
+  wildcardPolicy: None
 status: {}
 ....
 
