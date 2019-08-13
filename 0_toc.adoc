@@ -1,6 +1,8 @@
 [[openshift-v3-workshop-labs]]
-OpenShift V3 Workshop Labs
+OpenShift v3.11 Workshop Labs
 --------------------------
+
+Last Update Date: 2019/08/13
 
 [[lab-exercises-table-of-contents]]
 Lab Exercises Table of Contents
