@@ -17,7 +17,7 @@ Lab Exercises Table of Contents
 - [x] Lab 8. link:8-Using-SSL-In-your-Application.adoc[Using SSL In your Application]
 - [x] Lab 9. link:9-Blue-Green-Deployments.adoc[Blue-Green Deployments]
 - [x] Lab 10. link:10-SCM-Web-Hooks.adoc[SCM - Web Hooks]
-- [ ] Lab 11. link:11-Rollback-Applications.adoc[Rollback Applications]
+- [x] Lab 11. link:11-Rollback-Applications.adoc[Rollback Applications]
 - [ ] Lab 12. link:12-Code-Promotion-Across-Environments.adoc[Code Promotion Across Environments]
 - [ ] Lab 13. link:13-Using-Persistent-Storage.adoc[Using Persistent Storage]
 - [ ] Lab 14. link:14-Using-a-Custom-S2I-Image.adoc[Using Custom S2I Image to deploy an Application]
