@@ -1,5 +1,5 @@
 [[code-promotion-across-environments]]
-Code Promotion across Environments
+Code Promotion across Environments 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In this lab we will learn how an application image binary can be
@@ -17,12 +17,12 @@ Using the knowledge you gained from the past create two projects.
 Name the first project *development-UserName*
 
 ....
-$ oc new-project development-UserName
+$ oc new-project development
 ....
 
 Name the second *testing-UserName*.
 ....
-$ oc new-project testing-UserName
+$ oc new-project testing
 ....
 
 Also *remember* to substitute the username!
@@ -34,12 +34,13 @@ The following command will allow the QA project to be able to pull the
 docker images from the Development project.
 
 ....
-$ oc policy add-role-to-group system:image-puller system:serviceaccounts:testing-UserName -n development-UserName
+$ oc project testing
+$ oc policy add-role-to-group system:image-puller system:serviceaccounts:testing -n development
 ....
 
 *Step 3: Create an application in the development project*
 
-Switch over to the *development-UserName* project and deploy an
+Switch over to the *development* project and deploy an
 application using the `php` s2i builder. You can use webconsole or
 command line. The command line option is shown below.
 
@@ -47,7 +48,7 @@ command line. The command line option is shown below.
 deploy it so that you can redeploy with changes later.
 
 ....
-oc project development-UserName
+oc project development
 oc new-app openshift/php~https://github.com/RedHatWorkshops/welcome-php
 ....
 
@@ -75,14 +76,14 @@ Created:		7 minutes ago
 Labels:			app=welcome-php
 Annotations:		openshift.io/generated-by=OpenShiftNewApp
 			openshift.io/image.dockerRepositoryCheck=2017-08-21T23:24:26Z
-Docker Pull Spec:	docker-registry.default.svc:5000/development-UserName/welcome-php
+Docker Pull Spec:	docker-registry.default.svc:5000/development/welcome-php
 Unique Images:		1
 Tags:			1
 
 latest
   pushed image
 
-  * docker-registry.default.svc:5000/development-UserName/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf
+  * docker-registry.default.svc:5000/development/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf
       4 minutes ago
 
 ....
@@ -90,7 +91,7 @@ latest
 In this case, the full image Id is
 
 ....
-docker-registry.default.svc:5000/development-UserName/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf
+docker-registry.default.svc:5000/development/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf
 
 ....
 
@@ -100,7 +101,7 @@ to QA. Let us tag this docker image using the `oc tag` command.
 The format is
 
 ....
-oc tag FullImageId development-UserName/myapp:promote-qa
+oc tag FullImageId development/myapp:promote-qa
 ....
 
 Check the following commands and replace the values where needed:
@@ -108,14 +109,14 @@ Check the following commands and replace the values where needed:
 ....
 $ oc tag \
 docker-registry.default.svc:5000/development-UserName/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf \
-development-UserName/welcome-php:promote-qa
+development/welcome-php:promote-qa
 
-Tag welcome-php:promote-qa set to docker-registry.default.svc:5000/development-UserName/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf.
+Tag welcome-php:promote-qa set to docker-registry.default.svc:5000/development/welcome-php@sha256:157334d73dfc8dfdf733257b05c3fecaee236d36f69afa207395715fbe882abf.
 
 
 $ oc describe is welcome-php
 Name:			welcome-php
-Namespace:		development-UserName
+Namespace:		development
 Created:		4 minutes ago
 Labels:			app=welcome-php
 Annotations:		openshift.io/generated-by=OpenShiftNewApp
