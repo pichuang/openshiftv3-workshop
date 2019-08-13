@@ -6,12 +6,12 @@ OpenShift V3 Workshop Labs
 Lab Exercises Table of Contents
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- [x] Lab 0. link:0-Setting-up-client-tools.adoc[Setting up client tools] [ ]
+- [x] Lab 0. link:0-Setting-up-client-tools.adoc[Setting up client tools]
 - [x] Lab 1. link:1-Create-App-From-a-Docker-Image.adoc[Creating an application from an existing Docker Image using CLI]
 - [x] Lab 2. link:2-Create-App-Using-Docker-Build.adoc[Create an application using Docker Build Strategy using CLI]
 - [x] Lab 3. link:3-Using-Web-Console.adoc[Using Web Console]
 - [ ] Lab 4. link:4-Creating-an-application-using-JBoss-EAP-builder-image.adoc[Creating an application using JBoss EAP builder image]
-- [ ] Lab 5. link:5-Using-templates.adoc[Creating an application with frontend and backend database using templates]
+- [x] Lab 5. link:5-Using-templates.adoc[Creating an application with frontend and backend database using templates]
 - [ ] Lab 6. link:6-Scale-up-and-Scale-down-the-application-instances.adoc[Scale Up Scale Down and Idle the application instances]
 - [ ] Lab 7. link:7-Binary-Deployment-of-a-war-file.adoc[Binary deployment of a war file]
 - [ ] Lab 8. link:8-Using-SSL-In-your-Application.adoc[Using SSL In your Application]
