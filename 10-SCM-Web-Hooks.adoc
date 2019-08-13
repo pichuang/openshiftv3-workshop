@@ -21,17 +21,18 @@ In Part I of the Lab we will:
 *Remember* to substitute the UserName
 
 ....
-$ oc new-project scm-web-hooks-UserName --display-name="Test WebHooks"
+$ oc new-project lab10 --display-name="Test WebHooks"
 ....
 
 *Step 2: Create new application*
 
 * We will use the forked repository from the previous lab.
+link:https://github.com/RedHatWorkshops/bluegreen[Forked from RedHat Workshops/bluegreen]
 
 *Remember* to substitute the UserName.
 
 ....
-$ oc new-app --image-stream=php --code=https://github.com/your_github_username/bluegreen.git --name=scm-web-hooks
+$ oc new-app --image-stream=php --code=https://github.com/<your_github_username>/bluegreen.git --name=scm-web-hooks
 ....
 
 *Step 3: Look at some of the created resources*
@@ -157,7 +158,7 @@ image::images/github_show_url.png[image]
 * Click on Webhooks.
 * Click on the *Add webhook* button.
 * Add the recently copied Web Hook URL from OpenShift.
-* Change the Content-type as ``application/json''
+* Change the Content-type as **application/json**
 * Click on the *Disable SSL Verification* button.
 * Confirm by adding the *Add Webhook* button in green at the bottom of
 the page.
@@ -183,7 +184,7 @@ yourself.*
 ....
 $ oc get builds
 
-$ oc logs build/the-new-build-process-name
+$ oc logs build/scm-web-hooks-<NUMBER>
 ....
 
 [[summary]]
