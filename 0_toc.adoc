@@ -14,7 +14,7 @@ Lab Exercises Table of Contents
 - [x] Lab 5. link:5-Using-templates.adoc[Creating an application with frontend and backend database using templates]
 - [x] Lab 6. link:6-Scale-up-and-Scale-down-the-application-instances.adoc[Scale Up Scale Down and Idle the application instances]
 - [ ] Lab 7. link:7-Binary-Deployment-of-a-war-file.adoc[Binary deployment of a war file]
-- [ ] Lab 8. link:8-Using-SSL-In-your-Application.adoc[Using SSL In your Application]
+- [x] Lab 8. link:8-Using-SSL-In-your-Application.adoc[Using SSL In your Application]
 - [ ] Lab 9. link:9-Blue-Green-Deployments.adoc[Blue-Green Deployments]
 - [ ] Lab 10. link:10-SCM-Web-Hooks.adoc[SCM - Web Hooks]
 - [ ] Lab 11. link:11-Rollback-Applications.adoc[Rollback Applications]
