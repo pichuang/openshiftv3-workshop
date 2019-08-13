@@ -1,5 +1,5 @@
 [[openshift-v3-workshop-labs]]
-OpenShift v3.11 Workshop Labs
+OpenShift V3 Workshop Labs
 --------------------------
 
 Last Update Date: 2019/08/13
