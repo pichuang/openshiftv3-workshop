@@ -9,7 +9,7 @@ In this Lab we will:
 
 * Use the same app we deployed in previous Web Hooks Lab. If you haven’t, please
 complete that Lab first.
-* Rollback the application using the OpenShift v3 command ``rollback''.
+* Rollback the application using the OpenShift v3 command **rollback**.
 
 *Step 1: Check application health status*
 
