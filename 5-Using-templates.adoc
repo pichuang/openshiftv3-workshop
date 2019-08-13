@@ -14,7 +14,7 @@ Based on the experience gained from the previous exercise, log into the
 OpenShift Web Console. You will see the list of Projects.
 
 Using the *Create Project* button, create a new project. We will call it
-*consoleproject-UserName*. Replace by your username to make this project
+*lab5*. Replace by your username to make this project
 unique. Type in a *Display Name* and *Description* of your choice.
 
 Press the *Create* button to complete the project creation from the Web
@@ -39,7 +39,7 @@ You will be taken to the mysql ephemeral creation screen. Click *Next*
 parameters and edit the values to use the following values:
 
 ....
-Add to Project: consoleproject-UserName
+Add to Project: lab5
 Database Service Name: mysql
 MySQL Connection Username: pricelist
 MySQL Connection Password: pricelist
@@ -90,7 +90,7 @@ Select Languages -> PHP -> PHP
 Click *Next*
 
 ****
-Add to Project: consoleproject-UserName (this should be the same project as MySQL Ephemeral)
+Add to Project: lab5 (this should be the same project as MySQL Ephemeral)
 Application Name: pricelist
 Git Repository: https://github.com/RedHatWorkshops/php-pricelist
 
@@ -135,7 +135,7 @@ Cloning "https://github.com/RedHatWorkshops/php-pricelist" ...
 	Author:	Christian Hernandez <christian.hernandez@yahoo.com>
 	Date:	Thu Jun 29 10:52:43 2017 -0700
 ---> Installing application source...
-Pushing image docker-registry.default.svc:5000/consoleproject-christian/pricelist:latest ...
+Pushing image docker-registry.default.svc:5000/lab5/pricelist:latest ...
 Pushed 0/6 layers, 2% complete
 Pushed 1/6 layers, 26% complete
 Pushed 2/6 layers, 42% complete
@@ -154,7 +154,7 @@ console.
 Now use `curl` to run the database `bootstrap` script
 ....
 $ oc project
-Using project "consoleproject-Username" on server "{{CONSOLE_ADDRESS}}".
+Using project "lab5" on server "{{CONSOLE_ADDRESS}}".
 
 $ curl -k http://$(oc get route/pricelist -o jsonpath='{.spec.host}')/create_database.php
 Array
@@ -171,7 +171,7 @@ Go ahead and open your application. The URL will be displayed by `oc get route`
 ....
 $ oc get route
 NAME        HOST/PORT                                                    PATH      SERVICES    PORT       TERMINATION   WILDCARD
-pricelist   pricelist-consoleproject-Username.apps.workshop.osecloud.com 	                   pricelist   8080-tcp                 None
+pricelist   pricelist-lab5.apps.workshop.osecloud.com 	                   pricelist   8080-tcp                 None
 ....
 
 When you open your application, click on the "Create Record" button and create a record.
